@@ -6,6 +6,7 @@ import 'package:shop_app/views/account/account_view.dart';
 import 'package:shop_app/views/home_view.dart';
 import 'package:shop_app/views/login/login_view.dart';
 import 'package:shop_app/views/product_detail/product_detail_view.dart';
+import 'package:shop_app/views/products/componentes/product_assessment_view.dart';
 import 'package:shop_app/views/products/componentes/search_product_view.dart';
 import 'package:shop_app/views/products/products_view.dart';
 import 'package:shop_app/views/signup/signup_view.dart';
@@ -42,6 +43,11 @@ class NavigationRouter {
         final product = (settings.arguments as ProductModel);
 
         return MaterialPageRoute(builder: (_) => ProductDetailView(product));
+      case productAssessmentRoute:
+        
+        final id = (settings.arguments as String);
+
+        return MaterialPageRoute(builder: (_) => ProducAssessmetView(id));
 
         //return MaterialPageRoute(builder: (_) => ProductsFilterView());
       //   return MaterialPageRoute(builder: (_) => ListProductPage(dept: 1,));        
