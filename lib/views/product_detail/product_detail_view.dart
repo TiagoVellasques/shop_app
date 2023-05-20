@@ -1,6 +1,8 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -9,6 +11,8 @@ import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/views/products/componentes/product_assessment_view.dart';
 import 'package:shop_app/views/products/componentes/product_description_widget.dart';
 import 'package:shop_app/views/products/componentes/size_widget.dart';
+
+import '../../helpers/easy_mask.dart';
 
 class ProductDetailView extends StatefulWidget {
   static var routeName = '/product_detail';
@@ -34,6 +38,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     final primaryColor = Colors.grey.shade700;
 
     final CarouselController carouselController = CarouselController();
+    final TextEditingController _phoneContoller = TextEditingController();
+
+    //final maskCpf = MaskTextInputFormatter(mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
 
     const IconData icon_share = IconData(0xe593, fontFamily: 'MaterialIcons');
     const IconData icon_shopping_cart =
@@ -213,7 +220,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 5),
+                      padding: const EdgeInsets.only(top: 15, bottom: 5),
                       child: Text('Tamanho do produto',
                           style:
                               TextStyle(color: Colors.grey[700], fontSize: 13)),
@@ -225,6 +232,149 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         return SizeWidget(size: e);
                       }).toList(),
                     ),
+                    SizedBox(height: 15,),
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .grey.shade50, //Color.fromARGB(255, 243, 243, 243),
+                        border: Border(
+                          bottom: BorderSide(
+                            //                   <--- left side
+                            color: Colors.grey.shade200,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Calcular frete',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            TextField(
+                              autofocus: false,
+                              keyboardType: TextInputType.number,
+                              //controller: _phoneContoller,
+                              inputFormatters: [
+                                TextInputMask(mask: '99999-999'),
+                              ],
+                              decoration: InputDecoration(
+                                //hintText: 'CEP',
+                                labelText: 'CEP',
+                                hintStyle: TextStyle(fontSize: 16),
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 0, 32, 212)),
+                                ),
+                                // focusedBorder: UnderlineInputBorder(
+                                //         borderSide: BorderSide(color:Color.fromARGB(255, 0, 32, 212)),
+                                //     ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              //margin: EdgeInsets.symmetric(vertical: 15.0),
+                              //width: MediaQuery.of(context).size.width,
+                              child: Wrap(
+                                //crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing:
+                                    15, // to apply margin in the main axis of the wrap
+                                runSpacing: 10,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Wrap(
+                                          spacing: 10, // to apply margin in the main axis of the wrap
+                                          runSpacing: 20,
+                                          direction: Axis.horizontal,
+                                          alignment: WrapAlignment.start,
+                                          children: [
+                                            Icon(Icons.local_shipping),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    'Receba em até 5 dias úteis', style: TextStyle(fontSize: 16),),
+                                                Text(
+                                                'Receba em até 5 dias úteis', style: TextStyle(fontSize: 12),),
+                                              ],
+                                            ),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 0,
+                                        child: Text('Frete Grátis', style: TextStyle(color: Colors.green[600], fontSize: 16),),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(                                      
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            //                   <--- left side
+                                            color: Colors.grey.shade200,
+                                            width: 1.0,
+                                          ),
+                                        ),          
+                                      ) ,
+                                    ),                                      
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Wrap(
+                                          spacing: 10, // to apply margin in the main axis of the wrap
+                                          runSpacing: 20,
+                                          direction: Axis.horizontal,
+                                          alignment: WrapAlignment.start,
+                                          children: [
+                                            Icon(Icons.local_shipping),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    'Receba em até 5 dias úteis', style: TextStyle(fontSize: 16),),
+                                                Text(
+                                                'Receba em até 5 dias úteis', style: TextStyle(fontSize: 12),),
+                                              ],
+                                            ),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 0,
+                                        child: Text('Frete Grátis', style: TextStyle(color: Colors.green[600], fontSize: 16),),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                    ),
+                    
                     Column(
                       children: [
                         Container(
@@ -318,53 +468,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            //                   <--- left side
-                            color: Colors.grey.shade200,
-                            width: 1.0,
-                          ),
-                          top: BorderSide(
-                            //                    <--- top side
-                            color: Colors.grey.shade200,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          ProducDescriptionWidget(context, widget.product);
-                        },
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [                              
-                              Expanded(
-                                  flex: 0,
-                                  child: Text('Informações do produto',
-                                      style: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: 16))),
-                              Expanded(
-                                flex: 0,
-                                child: Text('+',
-                                    style: TextStyle(
-                                        color: Colors.grey[700], fontSize: 16)),
-                              ),
-                            ]),
-                      ),
-                    ), //
+                    ),//
                     SizedBox(
                       height: 15,
                     ),
                     InkWell(
                       onTap: () {
                         //ProducAssessmetView(widget.product.id.toString());
-                        Navigator.of(context)
-                        .pushNamed(ProducAssessmetView.routeName.toString(), arguments: widget.product.id.toString()); 
+                        Navigator.of(context).pushNamed(
+                            ProducAssessmetView.routeName.toString(),
+                            arguments: widget.product.id.toString());
                       },
                       child: Wrap(
                         runSpacing: 8,
@@ -390,20 +503,19 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(                                          
-                                height: 40,    
-                                alignment: Alignment.bottomLeft,                   
+                              Container(
+                                  height: 40,
+                                  alignment: Alignment.bottomLeft,
                                   child: Text('4.4',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 30))),
-                              Container(                                  
+                              Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       crossAxisAlignment:
@@ -440,16 +552,12 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         ],
                       ),
                     ),
-
                     SizedBox(
                       height: 15,
                     ),
                     Text(
-                      widget.product.description,
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color.fromARGB(255, 122, 118, 118),
-                      ),
+                      'Informações do produto',
+                      style: TextStyle(color: Colors.grey[700], fontSize: 16),
                     ),
                   ],
                 ),
@@ -458,106 +566,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> product_description(BuildContext context) {
-    return showModalBottomSheet<void>(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.89,
-          padding:
-              const EdgeInsets.only(top: 5, right: 14, left: 14, bottom: 0),
-          child: Column(
-            children: [
-              Align(
-                alignment: AlignmentDirectional.topEnd,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: InkWell(
-                    child: Icon(
-                      Icons.close,
-                      size: 30,
-                      color: Colors.grey,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.75,
-                child: Scrollbar(
-                  //thickness: 8, //width of scrollbar
-                  radius: Radius.circular(5), //corner radius of scrollbar
-                  scrollbarOrientation: ScrollbarOrientation.right,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Similar This',
-                              ),
-                              Text(
-                                widget.product.description +
-                                    " - " +
-                                    widget.product.description +
-                                    " - " +
-                                    widget.product.description +
-                                    " - " +
-                                    widget.product.description,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-                        // SizedBox(
-                        //   height: 110,
-                        //   child: ListView.builder(
-                        //     scrollDirection: Axis.horizontal,
-                        //     itemCount: smProducts.length,
-                        //     itemBuilder: (context, index) => Container(
-                        //       margin: const EdgeInsets.only(right: 6),
-                        //       width: 110,
-                        //       height: 110,
-                        //       decoration: BoxDecoration(
-                        //         color: AppColors.kSmProductBgColor,
-                        //         borderRadius: BorderRadius.circular(20),
-                        //       ),
-                        //       child: Center(
-                        //         child: Image(
-                        //           height: 70,
-                        //           image: AssetImage(smProducts[index].image),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 

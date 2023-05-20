@@ -9,7 +9,6 @@ import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/views/products/products_view.dart';
 
 class ProducAssessmetView extends StatefulWidget {
-  
   late String id;
   static var routeName = '/product_assessment';
 
@@ -19,13 +18,11 @@ class ProducAssessmetView extends StatefulWidget {
   State<ProducAssessmetView> createState() => _ProducAssessmetViewState();
 }
 
-class _ProducAssessmetViewState extends State<ProducAssessmetView> {  
-
+class _ProducAssessmetViewState extends State<ProducAssessmetView> {
   TextEditingController _search_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     print(widget.id);
 
     //search_product.text = "Pesquisar na loja...";
@@ -48,86 +45,20 @@ class _ProducAssessmetViewState extends State<ProducAssessmetView> {
         //     onPressed: () {},
         //     icon: Icon(Icons.close),
         //   )
-        // ],        
+        // ],
         elevation: 1,
         //centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            //                   <--- left side
-                            color: Colors.grey.shade200,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(                                                                  
-                      padding: EdgeInsets.all(12.0),
-                      alignment: Alignment.bottomLeft,                   
-                        child: Text('4.4',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 50))),
-                    Container(  
-                      alignment: Alignment.bottomLeft,                  
-                      padding: const EdgeInsets.symmetric(vertical: 12.0,
-                          horizontal: 12.0),
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber.shade400,
-                                size: 22,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber.shade400,
-                                size: 22,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber.shade400,
-                                size: 22,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "Opiniões dos compradores",
-                            style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      body: Row(
+        children: [          
           Expanded(
-            child: 
-            
-              ListView.builder(
-            itemCount: 5,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                decoration: BoxDecoration(
+            child: ListView.builder(
+                //physics: NeverScrollableScrollPhysics(),
+                itemCount: 5 + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return Container(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
                             //                   <--- left side
@@ -136,70 +67,131 @@ class _ProducAssessmetViewState extends State<ProducAssessmetView> {
                           ),
                         ),
                       ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Wrap(
-                         children: [
-                          Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12.0),
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '4.4',
+                              style: TextStyle(
+                                color: Colors.amber.shade400,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber.shade400,
-                                  size: 18,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 22,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 22,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 22,
+                                    ),
+                                  ],
                                 ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber.shade400,
-                                  size: 18,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber.shade400,
-                                  size: 18,
+                                Text(
+                                  "Opiniões dos compradores",
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontSize: 18),
                                 ),
                               ],
                             ),
-                            Text(
-                              "Opiniões dos compradores",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16),
-                            ),
-                            SizedBox(
-                              height: 20,
-                              width: double.infinity,
-                            ),
-                            Text(
-                              "Cliente",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                              width: double.infinity,
-                            ),
-                            Text(
-                              "em 15/05/2023",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18),
-                            ),
-                         ],
+                          ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              );
-            }),
-            
+                    );
+                  } else {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            //                   <--- left side
+                            color: Colors.grey.shade200,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Wrap(
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 18,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 18,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber.shade400,
+                                      size: 18,
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  "Opiniões dos compradores",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 16),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Cliente",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                  width: double.infinity,
+                                ),
+                                Text(
+                                  "em 15/05/2023",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                }),
           )
 
-          // Container(        
+          // Container(
           //   child: Card(
           //     elevation: 1,
           //     shape: RoundedRectangleBorder(
