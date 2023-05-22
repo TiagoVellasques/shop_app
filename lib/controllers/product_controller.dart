@@ -37,10 +37,12 @@ class ProductController{
     //_loadCurrentUser();
   }
 
-  Future<void> getAll() async {    
+  Future<List<ProductModel>> getAll() async {    
     allProducts = await repository.getAll();
     streamController.sink.add(allProducts);
     _currentPage++;
+
+    return allProducts;
     //notifyListeners();
   }
 }

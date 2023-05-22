@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:core';
+
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,9 +10,11 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/views/products/componentes/product_assessment_view.dart';
 import 'package:shop_app/views/products/componentes/product_description_widget.dart';
+import 'package:shop_app/views/products/componentes/product_list_view.dart';
 import 'package:shop_app/views/products/componentes/size_widget.dart';
 
 import '../../helpers/easy_mask.dart';
@@ -26,20 +31,38 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
+  int _current = 0;
+  bool _isLoading = false;
+
+  List<ProductModel> filteredProducts = [];
+
+  ProductController _productController = ProductController();
+  final ScrollController _scroll = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      getProducts();
+    });
   }
 
-  int _current = 0;
+  void getProducts() async {
+    var list = await (_productController.getAll());
+    print("getProducts");
+    print(list);
+
+    filteredProducts.addAll(list);
+  }
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Colors.grey.shade700;
 
     final CarouselController carouselController = CarouselController();
-    final TextEditingController _phoneContoller = TextEditingController();
-
+    final TextEditingController _cepContoller = TextEditingController();
+    
     //final maskCpf = MaskTextInputFormatter(mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
 
     const IconData icon_share = IconData(0xe593, fontFamily: 'MaterialIcons');
@@ -232,7 +255,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         return SizeWidget(size: e);
                       }).toList(),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
@@ -257,6 +282,18 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                   fontWeight: FontWeight.normal),
                             ),
                             TextField(
+                              //initialValue: _cepContoller.text.isEmpty ? "Cep" : null,
+                              onChanged: (value) {
+                                print(value.length);
+                                print((value.length == 9));
+
+                                if (value.length > 7) {
+                                  final int _cep =
+                                      int.parse(value.replaceAll("-", ""));
+                                  onSubmitCep(_cep);
+                                }
+                              },
+                              //controller: _cepContoller,
                               autofocus: false,
                               keyboardType: TextInputType.number,
                               //controller: _phoneContoller,
@@ -265,6 +302,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                               ],
                               decoration: InputDecoration(
                                 //hintText: 'CEP',
+                                suffix: this._isLoading
+                                    ? SizedBox(
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          strokeWidth: 3.0,
+                                        )),
+                                        height: 15.0,
+                                        width: 15.0,
+                                      )
+                                    : null,
                                 labelText: 'CEP',
                                 hintStyle: TextStyle(fontSize: 16),
                                 border: UnderlineInputBorder(
@@ -295,33 +342,46 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                       Expanded(
                                         flex: 1,
                                         child: Wrap(
-                                          spacing: 10, // to apply margin in the main axis of the wrap
+                                          spacing:
+                                              10, // to apply margin in the main axis of the wrap
                                           runSpacing: 20,
                                           direction: Axis.horizontal,
                                           alignment: WrapAlignment.start,
                                           children: [
                                             Icon(Icons.local_shipping),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    'Receba em até 5 dias úteis', style: TextStyle(fontSize: 16),),
+                                                  'Receba em até 5 dias úteis',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
                                                 Text(
-                                                'Receba em até 5 dias úteis', style: TextStyle(fontSize: 12),),
+                                                  'Receba em até 5 dias úteis',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
                                               ],
                                             ),
-                                            
                                           ],
                                         ),
                                       ),
                                       Expanded(
                                         flex: 0,
-                                        child: Text('Frete Grátis', style: TextStyle(color: Colors.green[600], fontSize: 16),),
+                                        child: Text(
+                                          'Frete Grátis',
+                                          style: TextStyle(
+                                              color: Colors.green[600],
+                                              fontSize: 16),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(                                      
+                                  SizedBox(
                                     child: Container(
                                       decoration: BoxDecoration(
                                         border: Border(
@@ -330,9 +390,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                             color: Colors.grey.shade200,
                                             width: 1.0,
                                           ),
-                                        ),          
-                                      ) ,
-                                    ),                                      
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Row(
                                     crossAxisAlignment:
@@ -343,29 +403,42 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                       Expanded(
                                         flex: 1,
                                         child: Wrap(
-                                          spacing: 10, // to apply margin in the main axis of the wrap
+                                          spacing:
+                                              10, // to apply margin in the main axis of the wrap
                                           runSpacing: 20,
                                           direction: Axis.horizontal,
                                           alignment: WrapAlignment.start,
                                           children: [
                                             Icon(Icons.local_shipping),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    'Receba em até 5 dias úteis', style: TextStyle(fontSize: 16),),
+                                                  'Receba em até 5 dias úteis',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
                                                 Text(
-                                                'Receba em até 5 dias úteis', style: TextStyle(fontSize: 12),),
+                                                  'Receba em até 5 dias úteis',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
                                               ],
                                             ),
-                                            
                                           ],
                                         ),
                                       ),
                                       Expanded(
                                         flex: 0,
-                                        child: Text('Frete Grátis', style: TextStyle(color: Colors.green[600], fontSize: 16),),
+                                        child: Text(
+                                          'Frete Grátis',
+                                          style: TextStyle(
+                                              color: Colors.green[600],
+                                              fontSize: 16),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -374,7 +447,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             ),
                           ]),
                     ),
-                    
                     Column(
                       children: [
                         Container(
@@ -467,9 +539,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
-                    ),//
-                    SizedBox(
                       height: 15,
                     ),
                     InkWell(
@@ -554,10 +623,42 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     SizedBox(
                       height: 15,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              //                   <--- left side
+                              color: Colors.grey.shade200,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Informações do produto',
-                      style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,   
+                        children: [
+                          Text(
+                            'Produtos que baixaram de preço',
+                            style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,                            
+                            children: [
+                              Container(                                
+                                child: _buildHorizontalList()
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -574,7 +675,194 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       this._current = index;
     });
   }
+
+  onSubmitCep(int cep) {
+    setState(() {
+      print(cep);
+      if (cep.toString().length == 8) {
+        this._isLoading = true;
+      } else {
+        this._isLoading = false;
+      }
+    });
+  }
+
+  Widget _buildHorizontalList() => StreamBuilder<List<ProductModel>>(
+        stream: _productController.streamController.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Expanded(
+              flex: 0,
+              //padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: GridView.builder(
+                controller: _scroll,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 0,
+                      mainAxisExtent: 300),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {                    
+                    
+                      final product = snapshot.data![index];     
+
+                      return Container(                        
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ProducListView(product: product),
+                      );                      
+                    
+                  }),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
+  
+  // Container(
+  //       height: 100,
+  //       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+  //         ListView.builder(
+  //           shrinkWrap: true,
+  //           scrollDirection: Axis.horizontal,
+  //           itemCount: filteredProducts.length,
+  //           itemBuilder: (context, index) {
+  //             print(index);
+              
+  //               final product = filteredProducts[index];
+
+  //               //print(product);
+
+  //               return Container(
+  //                 padding: const EdgeInsets.symmetric(horizontal: 8),
+  //                 child: ListView(
+  //                   shrinkWrap: true,
+  //                   children: <Widget>[
+  //                     Padding(
+  //                       padding: EdgeInsets.all(4.0),
+  //                       child: Image.network(
+  //                         product.images.first,
+  //                         width: 100,
+  //                         height: 100,
+  //                       ),
+  //                     ),
+  //                     Container(
+  //                       height: 18,
+  //                       color: Color.fromARGB(255, 16, 62, 83),
+  //                       //padding: EdgeInsets.all(8.0),
+  //                       child: Center(
+  //                         child: Row(
+  //                           mainAxisAlignment: MainAxisAlignment.center,
+  //                           children: [
+  //                             Icon(
+  //                               Icons.star,
+  //                               size: 12,
+  //                               color: Colors.lime[700],
+  //                             ),
+  //                             Text(
+  //                               "PRODUTOS CAMPEÕES",
+  //                               style: TextStyle(
+  //                                 fontSize: 10,
+  //                                 color: Colors.white,
+  //                                 fontWeight: FontWeight.bold,
+  //                                 //fontWeight: FontWeight.w800,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.symmetric(vertical: 8),
+  //                       child: Text(
+  //                         product.name,
+  //                         style: TextStyle(
+  //                           color: Colors.black,
+  //                           fontSize: 14,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       'R\$ 299.99',
+  //                       style: TextStyle(
+  //                         fontSize: 12,
+  //                         color: Color.fromARGB(255, 122, 118, 118),
+  //                         decoration: TextDecoration.lineThrough,
+  //                       ),
+  //                     ),
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                           flex: 2,
+  //                           child: Text(
+  //                             "R\$ 199,99",
+  //                             style: TextStyle(
+  //                               fontSize: 16,
+  //                               color: Colors.black,
+  //                               fontWeight: FontWeight.w800,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Row(
+  //                             mainAxisAlignment: MainAxisAlignment.end,
+  //                             children: [
+  //                               Icon(
+  //                                 Icons.discount,
+  //                                 color: Color.fromARGB(255, 9, 243, 67),
+  //                                 size: 12,
+  //                               ),
+  //                               Text(
+  //                                 '26%',
+  //                                 style: TextStyle(
+  //                                   color: Color.fromARGB(255, 9, 243, 67),
+  //                                   fontSize: 12,
+  //                                 ),
+  //                                 textAlign: TextAlign.end,
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.symmetric(vertical: 2),
+  //                       child: Text(
+  //                         'Até em 4x de R\$ 75,00',
+  //                         style: TextStyle(fontSize: 14, color: Colors.black),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               );
+              
+  //           },
+  //         ),
+  //       ]),
+  //     );
 }
+
+// child: Wrap(
+//                             //crossAxisAlignment: CrossAxisAlignment.start,
+//                             spacing: 20, // to apply margin in the main axis of the wrap
+//                             runSpacing: 20,
+//                             children: [
+//                               Text(
+//                                 product.name,
+//                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+//                               ),
+//                               Text(
+//                                 product.description +
+//                                     " - " +
+//                                     product.description +
+//                                     " - " +
+//                                     product.description +
+//                                     " - " +
+//                                     product.description,
+//                               ),
+//                             ],
+//                           ),
 
 class DotWidget extends StatelessWidget {
   const DotWidget({
