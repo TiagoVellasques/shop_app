@@ -20,11 +20,12 @@ class ProducListView extends StatelessWidget {
         Navigator.of(context)
           .pushNamed(ProductDetailView.routeName.toString(), arguments: product) 
       },
-      child: ListView(
-        shrinkWrap: true,
+      child: Wrap(        
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(4.0),
+          Align(
+            alignment: Alignment.center,
+
+            //padding: EdgeInsets.all(4.0),
             child: Image.network(
               product.images.first,
               width: 100,

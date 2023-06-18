@@ -1,6 +1,7 @@
 const String homeRoute = "/home";
 const String signupRoute = "/signup";
 const String loginRoute = "/login";
+const String cartRoute = "/cart";
 const String accountRoute = "/account";
 const String productsRoute = "/products";
 const String searchProductRoute = "/search_product";

@@ -85,7 +85,7 @@ class _ProductsViewState extends State<ProductsView> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 0,
-                      mainAxisExtent: 300),
+                      mainAxisExtent: 250),
                   itemCount: snapshot.data!.length + 1,
                   itemBuilder: (context, index) {                    
                     if (index < snapshot.data!.length) {

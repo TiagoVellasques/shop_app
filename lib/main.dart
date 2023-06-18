@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/controllers/account_controller.dart';
 import 'package:shop_app/controllers/product_controller.dart';
+import 'package:shop_app/controllers/cart_controller.dart';
 import 'package:shop_app/routers/navigator_service.dart';
 import 'package:shop_app/routers/router.dart';
 import 'package:shop_app/stores/app.store.dart';
@@ -50,6 +51,12 @@ class MyApp extends StatelessWidget {
         Provider(
           create: (_) => ProductController(),
           lazy: false,
+        ),
+        ProxyProvider<AccountController, CartController>(
+          create: (_) => CartController(),
+          lazy: false,
+          update: (context, accountController, cartController) => 
+            cartController..updateAccount(accountController),
         )
       ],
       child: MaterialApp(

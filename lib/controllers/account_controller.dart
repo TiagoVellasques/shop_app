@@ -8,6 +8,8 @@ class AccountController extends ChangeNotifier {
   late AccountRepository repository;
   //AppStore store = AppStore();
 
+  UserModel? user;
+
   bool _busy = false;
   bool get busy => _busy;
 
@@ -27,6 +29,7 @@ class AccountController extends ChangeNotifier {
       busy = true;
       var user = await repository.signInAccount(model);
       busy = false;
+      this.user = user;
       return user;
     } on Exception catch (e) {
 
@@ -37,13 +40,19 @@ class AccountController extends ChangeNotifier {
     }
   }
 
-  Future<UserModel?> loadCurrentUser() {
+  Future<UserModel?> loadCurrentUser() async {
     print("AccountController _loadCurrentUser");
-    return repository.loadCurrentUser();
+    var current_user = await repository.loadCurrentUser();
+    this.user = current_user;
+   
+    notifyListeners();
+
+    return this.user;
   }
 
   void signOut(){
     repository.signOut();
+    user = null;
     notifyListeners();
   }
 

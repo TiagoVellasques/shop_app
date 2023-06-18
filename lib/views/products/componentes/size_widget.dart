@@ -8,15 +8,24 @@ import 'package:shop_app/models/products/product_size_model.dart';
 
 class SizeWidget extends StatelessWidget {
   
-  const SizeWidget({required this.size});
+  SizeWidget({required this.size});
 
   final ProductSizeModel size;
-
+  
   @override
   Widget build(BuildContext context) {
     final product = context.watch<ProductModel>();
-    final selected = size == product.selectedSize;
+
+    //print(product.toJson());
+
+    late bool selected = false;
+    if(product.selectedSize != null)
+        selected = size == product.selectedSize;
+
+    //final selected = false;
     
+   print("SizeWidget =>>>>> ${this.size}");
+
     return GestureDetector(
       onTap: (){
         if(size.hasStock){          

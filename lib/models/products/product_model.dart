@@ -13,11 +13,33 @@ class ProductModel extends ChangeNotifier {
   late List<ProductSizeModel> sizes;
   late String confirmPassword;
 
-  late ProductSizeModel? _selectedSize = null;
+  ProductSizeModel? _selectedSize;
   ProductSizeModel? get selectedSize => _selectedSize;
+  
   set selectedSize(ProductSizeModel? value){      
       _selectedSize = value;
       notifyListeners();
+  }
+
+  int get totalStock {
+    int stock = 0;
+    for(final size in sizes){
+      stock += size.stock;
+    }
+    return stock;
+  }
+
+  ProductSizeModel? findSize(String name){
+    try{
+      return sizes.firstWhere((s) => s.name == name);
+    }catch(e){
+      return null;
+    }
+    
+  }
+
+  bool get hasStock{
+    return totalStock > 0;
   }
   
   Map<String, dynamic> toJson(){
@@ -35,7 +57,7 @@ class ProductModel extends ChangeNotifier {
     sizes = json['size'];
   }
 
-   ProductModel.fromDocument(DocumentSnapshot document) {   
+  ProductModel.fromDocument(DocumentSnapshot document) {   
       
     id = document.id;
     name =  document['name'].toString();

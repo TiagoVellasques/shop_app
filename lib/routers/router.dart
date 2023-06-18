@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/routers/router_path.dart';
 import 'package:shop_app/views/account/account_view.dart';
+import 'package:shop_app/views/cart/cart_view.dart';
 import 'package:shop_app/views/home_view.dart';
 import 'package:shop_app/views/login/login_view.dart';
 import 'package:shop_app/views/product_detail/product_detail_view.dart';
@@ -18,6 +19,8 @@ class NavigationRouter {
     switch (settings.name) {      
       case loginRoute:
         return MaterialPageRoute(builder: (_) => LoginPage());
+      case cartRoute:
+        return MaterialPageRoute(builder: (_) => CartView());
       case signupRoute:
         return MaterialPageRoute(builder: (_) => SignUpView()); 
       case accountRoute:

@@ -7,17 +7,44 @@ import 'package:shop_app/common/custom_drawer/custom_drawer.dart';
 import 'package:shop_app/constants/colors.dart';
 import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/models/category/category_model.dart';
+import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/stores/app.store.dart';
+import 'package:shop_app/views/products/componentes/product_list_view.dart';
 import 'package:shop_app/views/products/componentes/search_product_view.dart';
 import 'package:shop_app/views/products/products_view.dart';
 import 'package:shop_app/widgets/category_tab.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+
   var routeName = '/home';
-  final PageController pageController = PageController();
 
   HomeView({Key? key}) : super(key: key);
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  
+
+  final PageController pageController = PageController();
+
+  ProductController _productController = ProductController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      getProducts();
+    });
+  }
+
+  void getProducts() async {
+    var list = await (_productController.getAll());
+    print("getProducts");
+    print(list);
+  }
 
   final List<CategoryModel> categories = [
       CategoryModel('', 'assets/images/pet_category_dog.png', Colors.white),
@@ -83,6 +110,18 @@ class HomeView extends StatelessWidget {
                       dotSpacing: 15.0,
                     ),
                   ),
+                  // Expanded(                    
+                  //   child: ListView.builder(
+                  //     shrinkWrap: true,
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: 6,
+                  //     itemBuilder: (BuildContext context, int index) => 
+                  //       Card(
+                  //         child: Center(child: Text('Dummy Card Text')),
+                  //       ),
+                  //   ),
+                  // ),
+                  //_productsOnOffer(),
                   CategoryTab(categories: categories),
                   // // Padding(
                   // //   padding: EdgeInsets.all(8.0),
@@ -110,6 +149,29 @@ class HomeView extends StatelessWidget {
       ],
     );
   }
+
+  Widget _productsOnOffer() => StreamBuilder<List<ProductModel>>(
+        stream: _productController.streamController.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                //controller: _scroll,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,                
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final product = snapshot.data![index];
+
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ProducListView(product: product),
+                  );
+                });
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
 }
 
 class BannerImages {
