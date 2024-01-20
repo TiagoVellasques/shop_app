@@ -16,7 +16,7 @@ class AccountController extends ChangeNotifier {
   AccountController() {
     print("aqui pela AccountController");
     repository = AccountRepository();
-    //_loadCurrentUser();
+    loadCurrentUser();
   }
 
   Future<UserModel> create(SignupViewModel model) async {

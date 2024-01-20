@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/helpers/firebase_error.dart';
+import 'package:shop_app/models/cart/cart_product_model.dart';
 import 'package:shop_app/models/users/user_model.dart';
 import 'package:shop_app/view_models/signup_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -110,7 +111,7 @@ class UserService {
 
       user = UserModel.fromDocument(docUser);
 
-      print(user!.token.toString());
+      print(user);
 
       //notifyListeners();
       return user;
@@ -119,4 +120,6 @@ class UserService {
       return null;
     }
   }
+
+  
 }

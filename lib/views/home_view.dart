@@ -9,6 +9,7 @@ import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/models/category/category_model.dart';
 import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/stores/app.store.dart';
+import 'package:shop_app/views/cart/cart_view.dart';
 import 'package:shop_app/views/products/componentes/product_list_view.dart';
 import 'package:shop_app/views/products/componentes/search_product_view.dart';
 import 'package:shop_app/views/products/products_view.dart';
@@ -55,6 +56,9 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
+    const IconData shopping_cart = IconData(0xe59c, fontFamily: 'MaterialIcons');
+
     //var store = Provider.of<AppStore>(context);
     return PageView(
       children: <Widget>[
@@ -73,6 +77,16 @@ class _HomeViewState extends State<HomeView> {
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(SearchProductView.routeName.toString());
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  shopping_cart,
+                  //color: Colors.red,
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(CartView.routeName.toString());
                 },
               ),
             ],
