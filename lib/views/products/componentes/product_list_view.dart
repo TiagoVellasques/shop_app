@@ -1,7 +1,9 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shop_app/analytics/analytics.dart';
 import 'package:shop_app/models/products/product_model.dart';
 import 'package:shop_app/views/product_detail/product_detail_view.dart';
 
@@ -15,8 +17,20 @@ class ProducListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  FirebaseAnalytics.instance
+    .setCurrentScreen(
+      screenName: 'Product List'
+    );
+
     return GestureDetector(
-      onTap: () => {
+      onTap: () async => {
+        await FirebaseAnalytics.instance.logEvent(
+                name: 'product_view',
+                parameters: <String, dynamic>{
+                  'id': product.id,
+                  'name': product.name,
+                },
+              ),
         Navigator.of(context)
           .pushNamed(ProductDetailView.routeName.toString(), arguments: product) 
       },

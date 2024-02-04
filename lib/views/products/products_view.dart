@@ -1,8 +1,10 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/analytics/analytics.dart';
 import 'package:shop_app/common/custom_drawer/custom_drawer.dart';
 import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/models/products/product_model.dart';
@@ -29,6 +31,18 @@ class _ProductsViewState extends State<ProductsView> {
     super.initState();
     getProducts();
   } 
+
+  @override
+  void didChangeDependencies() {
+    print("Product View");
+    super.didChangeDependencies();
+    // add setCurrentScreeninstead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    //FirebaseAnalytics.instance.setCurrentScreen(screenName: "Product View");
+    //context.read<Analytics>().setTrackingScreen("Product View");
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Product View");
+  }
 
   void getProducts() {
     _productController.getProducts(widget.filter);    

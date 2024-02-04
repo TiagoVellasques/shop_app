@@ -1,8 +1,12 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:banner_carousel/banner_carousel.dart';
+import 'package:shop_app/analytics/analytics.dart';
+import 'package:shop_app/analytics/remote_config_service.dart';
 import 'package:shop_app/common/custom_drawer/custom_drawer.dart';
 import 'package:shop_app/constants/colors.dart';
 import 'package:shop_app/controllers/product_controller.dart';
@@ -33,9 +37,19 @@ class _HomeViewState extends State<HomeView> {
   ProductController _productController = ProductController();
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // add setCurrentScreeninstead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Home");
+    //context.read<Analytics>().setTrackingScreen("Home");
+  }
 
+  @override
+  void initState() {
+    super.initState();    
+    
     Future.delayed(Duration.zero, () async {
       getProducts();
     });
@@ -43,8 +57,15 @@ class _HomeViewState extends State<HomeView> {
 
   void getProducts() async {
     var list = await (_productController.getAll());
+
+    //final RemoteConfig remoteConfig = await RemoteConfig.instance;
+      //final RemoteConfigService remoteConfigService = RemoteConfigService(remoteConfig: remoteConfig);
+      //await remoteConfigService.initialise();
+
     print("getProducts");
     print(list);
+
+    
   }
 
   final List<CategoryModel> categories = [
