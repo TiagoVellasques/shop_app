@@ -1,4 +1,4 @@
-import 'package:carousel_pro/carousel_pro.dart';
+//import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -119,32 +119,32 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: Carousel(
-                      boxFit: BoxFit.cover,
-                      images: [
-                        Image.network(
-                          'https://images.tcdn.com.br/img/img_prod/560844/1616685663_molecao_banner_app_royal_canin.png',
-                          fit: BoxFit.fill,
-                        ),
-                        Image.network(
-                            'https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_860,h_314/https://www.petdriver.com.br/blog/wp-content/uploads/2020/10/PETDRIVER_banners_blog_alt_VPSF.jpg',
-                            fit: BoxFit.fill),
-                        Image.network(
-                            'https://i.pinimg.com/736x/85/d1/8a/85d18aedd939a3f64bb27f78ecfd29ea.jpg',
-                            fit: BoxFit.fill),
-                      ],
-                      animationDuration: Duration(milliseconds: 1000),
-                      autoplay: true,
-                      dotColor: Colors.grey,
-                      dotBgColor: Colors.transparent,
-                      dotHorizontalPadding: 10.0,
-                      dotSize: 5.0,
-                      dotSpacing: 15.0,
-                    ),
-                  ),
+                  // // SizedBox(
+                  // //   height: 200,
+                  // //   width: double.infinity,
+                  // //   child: Carousel(
+                  // //     boxFit: BoxFit.cover,
+                  // //     images: [
+                  // //       Image.network(
+                  // //         'https://images.tcdn.com.br/img/img_prod/560844/1616685663_molecao_banner_app_royal_canin.png',
+                  // //         fit: BoxFit.fill,
+                  // //       ),
+                  // //       Image.network(
+                  // //           'https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_860,h_314/https://www.petdriver.com.br/blog/wp-content/uploads/2020/10/PETDRIVER_banners_blog_alt_VPSF.jpg',
+                  // //           fit: BoxFit.fill),
+                  // //       Image.network(
+                  // //           'https://i.pinimg.com/736x/85/d1/8a/85d18aedd939a3f64bb27f78ecfd29ea.jpg',
+                  // //           fit: BoxFit.fill),
+                  // //     ],
+                  // //     animationDuration: Duration(milliseconds: 1000),
+                  // //     autoplay: true,
+                  // //     dotColor: Colors.grey,
+                  // //     dotBgColor: Colors.transparent,
+                  // //     dotHorizontalPadding: 10.0,
+                  // //     dotSize: 5.0,
+                  // //     dotSpacing: 15.0,
+                  // //   ),
+                  // // ),
                   // Expanded(                    
                   //   child: ListView.builder(
                   //     shrinkWrap: true,

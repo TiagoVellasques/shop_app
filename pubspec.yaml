@@ -42,14 +42,14 @@ dependencies:
   firebase_remote_config:  ^4.1.1
   firebase_auth: ^4.4.0
   cloud_firestore: ^4.5.0
-  provider: ^4.0.5
+  provider: ^6.1.2 # ^4.0.5
   get_it: ^7.2.0
   brasil_fields: ^1.9.1
   mobx: ^2.1.4
   flutter_mobx: ^2.0.6+5  
   banner_carousel: ^1.2.1
   carousel_slider: ^4.0.0
-  carousel_pro: ^1.0.0
+  #carousel_pro: ^1.0.0
   mask_text_input_formatter: ^2.4.0
 
 dev_dependencies:

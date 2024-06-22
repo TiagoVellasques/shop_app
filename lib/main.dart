@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ Future<void> main() async {
 
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  MyApp() : super();
 
   // This widget is the root of your application.
 
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
           create: (_) => CartController(),
           lazy: false,
           update: (context, accountController, cartController) => 
-            cartController..updateAccount(accountController),
+            cartController!..updateAccount(accountController),
         )
       ],
       child: MaterialApp(

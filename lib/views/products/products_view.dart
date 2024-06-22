@@ -34,14 +34,14 @@ class _ProductsViewState extends State<ProductsView> {
 
   @override
   void didChangeDependencies() {
-    print("Product View");
+
     super.didChangeDependencies();
     // add setCurrentScreeninstead of initState because might not always give you the
     // expected results because initState() is called before the widget
     // is fully initialized, so the screen might not be visible yet.
     //FirebaseAnalytics.instance.setCurrentScreen(screenName: "Product View");
     //context.read<Analytics>().setTrackingScreen("Product View");
-    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Product View");
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "product_detail");
   }
 
   void getProducts() {
